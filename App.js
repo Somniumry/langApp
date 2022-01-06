@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Animated } from 'react-native';
 import styled from 'styled-components/native';
 
 const Container = styled.View`
@@ -12,6 +13,8 @@ const Box = styled.TouchableOpacity`
   width: 200px;
   height: 200px;
 `
+
+const AnimatedBox = Animated.createAnimatedComponent(Box);
 
 const App = () => {
 
@@ -33,7 +36,7 @@ const App = () => {
 
   return (
     <Container>
-      <Box
+      <AnimatedBox
         onPress={moveUp}
         style={{
           transform: [{ translateY: y }],
