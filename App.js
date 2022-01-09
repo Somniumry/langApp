@@ -24,7 +24,7 @@ const App = () => {
   const moveUp = () => {
     console.log("touch")
     Animated.timing(Y_POSITION, {
-      toValue: up ? 300 : -300,
+      toValue: up ? -300 : 300,
       useNativeDriver: false,
       duration: 1000,
     }).start(toggleUp)
