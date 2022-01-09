@@ -49,12 +49,17 @@ export default function App() {
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (_, { dx }) => {
-        console.log(">>>", dx)
         position.setValue(dx)
       },
       onPanResponderGrant: () => onPressIn(),
-      onPanResponderRelease: () => {
-        Animated.parallel([onPressOut, goCenter]).start()
+      onPanResponderRelease: (_, { dx }) => {
+        if (dx < -270) {
+          Animated.spring(position, {toValue: -500, useNativeDriver: true}).start()
+        } else if (dx > 270) {
+          Animated.spring(position, {toValue: 500, useNativeDriver: true}).start()
+        } else {
+          Animated.parallel([onPressOut, goCenter]).start()
+        }
       }
     })
   ).current
