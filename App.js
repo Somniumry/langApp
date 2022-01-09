@@ -21,29 +21,17 @@ const App = () => {
   const Y = useRef(new Animated.Value(0)).current; // 애니메이션
   const toggleUp = () => setUp((prev) => !prev);
   const moveUp = () => {
+    console.log("touch")
     Animated.timing(Y, {
-      toValue: 200,
+      toValue: up ? 200 : -200,
       useNativeDriver: true
     }).start(toggleUp)
   };
 
-  // 현 코드 실행 설명
-  /*
-  moveUp 함수 실행
-   애니메이션(timing)실행 된 후 toggleUp 함수가 실행됨
-   toggleUp 함수는 컴포넌트 상태관리 변경에 대한 함수이다
-   -> toggleUp 함수를 실행할 때마다 컴포넌트가 재렌더링 된다는 뜻
-
-  그렇기 때문에 moveUp 함수를 실행하고 나온 결과는
-  Y위치 0 -> Y위치 200(animation) -> toggleUp 실행 -> 컴포넌트 재렌더링 -> Y=new Animated.Value(0) 재실행 -> Y위치 0
-
-  현재 위치가 0으로 재렌더링 되는 것을 방지하기 위해서 useRef Hooks를 사용함
-  그러면 재렌더링 되지 않고 현 위치 유지됨
-  */
+  console.log(">>>", up)
 
   return (
     <Container>
-      {/* TouchableOpacity로 감싼다. */}
       <TouchableOpacity onPress={moveUp}>
         <AnimatedBox
           style={{
