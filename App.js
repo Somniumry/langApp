@@ -28,27 +28,27 @@ export default function App() {
       onPanResponderMove: (_, { dx }) => { position.setValue(dx) },
       onPanResponderGrant: () => onPressIn(),
       onPanResponderRelease: () => {
-        onPressOut()
-        Animated.spring(position, {
-          toValue: 0,
-          useNativeDriver: true
-        }).start()
+        Animated.parallel([
+          onPressOut,
+          Animated.spring(position, {
+            toValue: 0,
+            useNativeDriver: true
+          }).start()
+        ])
       }
     })
   ).current
 
-  const scale = useRef(new Animated.Value(1)).current;
-  const position = useRef(new Animated.Value(0)).current;
+  const scale = useRef(new Animated.Value(1)).current; // 사각형 크기
+  const position = useRef(new Animated.Value(0)).current; // 사각형 위치(가운데)
 
-  const onPressIn = () => {
+  const onPressIn = () => { // 사각형 눌렀을 때
     Animated.spring(scale, { toValue: 0.85, useNativeDriver: true }).start()
   }
 
-  const onPressOut = () => {
+  const onPressOut = () => { // 누른거 뗐을 때
     Animated.spring(scale, { toValue: 1, useNativeDriver: true })
   }
-
-
 
   return (
     <Container>
