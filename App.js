@@ -15,7 +15,7 @@ const AnimatedBox = Animated.createAnimatedComponent(Box);
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function App() {
-  const POSITION = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const POSITION = useRef(new Animated.ValueXY({ x: -SCREEN_WIDTH / 2 + 100, y: -SCREEN_HEIGHT / 2 + 100 })).current;
 
   const topLeft = Animated.timing(POSITION, {
     toValue: {
@@ -32,7 +32,7 @@ export default function App() {
     },
     useNativeDriver: false
   })
-  
+
   const bottomRight = Animated.timing(POSITION, {
     toValue: {
       x: SCREEN_WIDTH / 2 - 100,
@@ -41,7 +41,7 @@ export default function App() {
     useNativeDriver: false
   })
 
-  const topRight =  Animated.timing(POSITION, {
+  const topRight = Animated.timing(POSITION, {
     toValue: {
       x: SCREEN_WIDTH / 2 - 100,
       y: -SCREEN_HEIGHT / 2 + 100
@@ -51,7 +51,7 @@ export default function App() {
 
   const moveUp = () => {
     Animated.loop(
-      Animated.sequence([topLeft, bottomLeft, bottomRight, topRight])
+      Animated.sequence([bottomLeft, bottomRight, topRight, topLeft])
     ).start()
   };
 
