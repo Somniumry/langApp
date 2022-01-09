@@ -19,7 +19,12 @@ const AnimatedBox = Animated.createAnimatedComponent(Box);
 const App = () => {
 
   const Y = new Animated.Value(0);
-  const moveUp = () => {};
+  const moveUp = () => {
+    Animated.timing(Y, {
+      toValue: 200,
+      useNativeDriver: true
+    }).start()
+  };
 
   return (
     <Container>
