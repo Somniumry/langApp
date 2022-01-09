@@ -72,28 +72,27 @@ export default function App() {
   const goLeft = Animated.spring(position, {
     toValue: -500,
     useNativeDriver: true,
+    restDisplacementThreshold: 100, // 애니메이션 변환 스피드(back Card -> front Card) 
+    restSpeedThreshold: 100 // 애니메이션 변환 스피드(back Card -> front Card)
   })
   const goRight = Animated.spring(position, {
     toValue: 500,
     useNativeDriver: true,
   })
 
-  console.log("!!!!", icons)
   // Pan Responders
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true, // 터치감지
       onPanResponderMove: (_, { dx }) => { // 움직임감지
-        console.log(dx);
         position.setValue(dx);
       },
       onPanResponderGrant: () => onPressIn.start(), // start
       onPanResponderRelease: (_, { dx }) => { // finish
-        console.log(dx)
         if (dx < -270) {
-          goLeft.start();
+          goLeft.start(onInfiniti);
         } else if (dx > 270) {
-          goRight.start();
+          goRight.start(onInfiniti);
         } else {
           Animated.parallel([onPressOut, goCenter]).start();
         }
@@ -106,10 +105,11 @@ export default function App() {
   // position.setValue(0)으로 인하여 카드 무한정 나오는 듯한 표현가능(현 카드 2장임)
   const onInfiniti = () => {
     scale.setValue(1);
-    position.setValue(0);
+    position.setValue(0); // setsValue를 하면 바로 빡 나옴
+    // Animated.timing(position, { toValue: 0, useNativeDriver: true }).start(); // Animated로 하면 천천히 나옴
     setIndex((prev) => prev + 1)
   }
-  
+
   // start안에 onInfiniti 함수 넣음
   const canclePress = () => { goLeft.start(onInfiniti) }
   const checkPress = () => { goRight.start(onInfiniti) }
@@ -119,9 +119,9 @@ export default function App() {
       <CardContainer>
         <Card
           style={{ transform: [{ scale: secondScale }] }}>
-          <Icon2 name={"beer"} size={98} color={"black"} />
-          <Text style={{color: "black"}}>Back Card</Text>
-          {/* <Icon2 name={icons[index+1]} size={98} color={"black"} /> */}
+          {/* <Icon2 name={"beer"} size={98} color={"black"} /> */}
+          <Text style={{ color: "black" }}>Back Card</Text>
+          <Icon2 name={icons[index + 1]} size={98} color={"black"} />
         </Card>
         <Card
           {...panResponder.panHandlers}
@@ -133,9 +133,9 @@ export default function App() {
             ],
           }}
         >
-          <Icon2 name={"pizza-slice"} size={98} color={"black"} />
-          <Text style={{color: "black"}}>Front Card</Text>
-          {/* <Icon2 name={icons[index]} size={98} color={"black"} /> */}
+          {/* <Icon2 name={"pizza-slice"} size={98} color={"black"} /> */}
+          <Text style={{ color: "black" }}>Front Card</Text>
+          <Icon2 name={icons[index]} size={98} color={"black"} />
         </Card>
       </CardContainer>
       <BtnContainer>
