@@ -20,15 +20,22 @@ const Card = styled(Animated.createAnimatedComponent(View))`
   align-items: center;
   border-radius: 12px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  position: absolute;
 `;
 
 const BtnContainer = styled.View`
   flex-direction: row;
-  margin-top: 100px;
+  flex: 1;
 `
 
 const Btn = styled.TouchableOpacity`
   margin: 0px 20px;
+`
+
+const CardContainer = styled.View`
+  flex: 3;
+  justify-content: center;
+  align-items: center;
 `
 
 export default function App() {
@@ -89,18 +96,23 @@ export default function App() {
 
   return (
     <Container>
-      <Card
-        {...panResponder.panHandlers}
-        style={{
-          transform: [
-            { scale },
-            { translateX: position },
-            { rotateZ: rotation },
-          ],
-        }}
-      >
-        <Icon2 name={"pizza-slice"} size={98} color={"black"} />
-      </Card>
+      <CardContainer>
+        <Card>
+          <Icon2 name={"beer"} size={98} color={"black"} />
+        </Card>
+        <Card
+          {...panResponder.panHandlers}
+          style={{
+            transform: [
+              { scale },
+              { translateX: position },
+              { rotateZ: rotation },
+            ],
+          }}
+        >
+          <Icon2 name={"pizza-slice"} size={98} color={"black"} />
+        </Card>
+      </CardContainer>
       <BtnContainer>
         <Btn onPress={canclePress}>
           <Icon name={"thumbs-o-down"} size={52} />
