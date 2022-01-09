@@ -41,10 +41,18 @@ const CardContainer = styled.View`
 export default function App() {
   // Values
   const scale = useRef(new Animated.Value(1)).current;
+
   const position = useRef(new Animated.Value(0)).current;
+
   const rotation = position.interpolate({
     inputRange: [-250, 250],
     outputRange: ["-15deg", "15deg"],
+  });
+
+  const secondScale = position.interpolate({
+    inputRange: [-300, 0, 300],
+    outputRange: [1, 0.7, 1],
+    extrapolate: "clamp"
   });
 
   // Animations
@@ -97,7 +105,8 @@ export default function App() {
   return (
     <Container>
       <CardContainer>
-        <Card>
+        <Card
+          style={{ transform: [{ scale: secondScale }] }}>
           <Icon2 name={"beer"} size={98} color={"black"} />
         </Card>
         <Card
