@@ -50,7 +50,9 @@ export default function App() {
   })
 
   const moveUp = () => {
-    Animated.sequence([topLeft, bottomLeft, bottomRight, topRight]).start()
+    Animated.loop(
+      Animated.sequence([topLeft, bottomLeft, bottomRight, topRight])
+    ).start()
   };
 
   const borderRadius = POSITION.y.interpolate({
