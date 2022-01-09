@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -18,7 +18,7 @@ const AnimatedBox = Animated.createAnimatedComponent(Box);
 
 const App = () => {
   const [up, setUp] = useState(false); // 컴포넌트
-  const Y = new Animated.Value(0); // 애니메이션
+  const Y = useRef(new Animated.Value(0)).current; // 애니메이션
   const toggleUp = () => setUp((prev) => !prev);
   const moveUp = () => {
     Animated.timing(Y, {
@@ -36,6 +36,9 @@ const App = () => {
 
   그렇기 때문에 moveUp 함수를 실행하고 나온 결과는
   Y위치 0 -> Y위치 200(animation) -> toggleUp 실행 -> 컴포넌트 재렌더링 -> Y=new Animated.Value(0) 재실행 -> Y위치 0
+
+  현재 위치가 0으로 재렌더링 되는 것을 방지하기 위해서 useRef Hooks를 사용함
+  그러면 재렌더링 되지 않고 현 위치 유지됨
   */
 
   return (
