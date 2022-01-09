@@ -32,23 +32,23 @@ export default function App() {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true, 
+      onPanResponderGrant: () => {
+        // Touch Start
+        POSITION.setOffset({
+          x: POSITION.x._value,
+          y: POSITION.y._value
+        })
+      },
       onPanResponderMove: (_, {dx, dy}) => {
-        // console.log(">>>", dx, dy)
+        // Touch Moving
         POSITION.setValue({
           x: dx,
           y: dy
         })
       },
       onPanResponderRelease: () => {
-        // Velog setValue와 Animated.spring 차이점 기록해둠
-        // POSITION.setValue({ x: 0, y: 0 })
-        Animated.spring(POSITION, {
-          toValue: {
-            x: 0,
-            y: 0
-          },
-          useNativeDriver: false
-        }).start()
+        // Touch Finished
+        POSITION.flattenOffset()
       }
     })
   ).current
