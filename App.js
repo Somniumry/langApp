@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Animated, PanResponder, View } from "react-native";
+import { Animated, PanResponder, Text, View } from "react-native";
 import styled from "styled-components/native";
 import Icon2 from 'react-native-vector-icons/dist/FontAwesome5';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -99,15 +99,23 @@ export default function App() {
     })
   ).current;
 
-  const canclePress = () => { goLeft.start() }
-  const checkPress = () => { goRight.start() }
+  // position.setValue(0)으로 인하여 카드 무한정 나오는 듯한 표현가능(현 카드 2장임)
+  const onInfiniti = () => {
+    scale.setValue(1);
+    position.setValue(0);
+  }
+  
+  // start안에 onInfiniti 함수 넣음
+  const canclePress = () => { goLeft.start(onInfiniti) }
+  const checkPress = () => { goRight.start(onInfiniti) }
 
   return (
     <Container>
       <CardContainer>
         <Card
           style={{ transform: [{ scale: secondScale }] }}>
-          <Icon2 name={"beer"} size={98} color={"black"} />
+          {/* <Icon2 name={"beer"} size={98} color={"black"} /> */}
+          <Text style={{color: "black"}}>Card</Text>
         </Card>
         <Card
           {...panResponder.panHandlers}
@@ -119,7 +127,8 @@ export default function App() {
             ],
           }}
         >
-          <Icon2 name={"pizza-slice"} size={98} color={"black"} />
+          {/* <Icon2 name={"pizza-slice"} size={98} color={"black"} /> */}
+          <Text style={{color: "black"}}>Card</Text>
         </Card>
       </CardContainer>
       <BtnContainer>
