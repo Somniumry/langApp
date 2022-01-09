@@ -2,7 +2,9 @@ import React, { useRef, useState } from "react";
 import { Animated, PanResponder, View } from "react-native";
 import styled from "styled-components/native";
 import Icon2 from 'react-native-vector-icons/dist/FontAwesome5';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
+// Style
 const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -20,7 +22,14 @@ const Card = styled(Animated.createAnimatedComponent(View))`
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 `;
 
-// const AnimatedCard = Animated.createAnimatedComponent(Card)
+const BtnContainer = styled.View`
+  flex-direction: row;
+  margin-top: 100px;
+`
+
+const Btn = styled.TouchableOpacity`
+  margin: 0px 20px;
+`
 
 export default function App() {
   // Values
@@ -44,34 +53,40 @@ export default function App() {
     toValue: 0,
     useNativeDriver: true,
   });
+  const goLeft = Animated.spring(position, {
+    toValue: -500,
+    useNativeDriver: true,
+  })
+  const goRight = Animated.spring(position, {
+    toValue: 500,
+    useNativeDriver: true,
+  })
 
   // Pan Responders
   const panResponder = useRef(
     PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: (_, { dx }) => {
+      onStartShouldSetPanResponder: () => true, // 터치감지
+      onPanResponderMove: (_, { dx }) => { // 움직임감지
         console.log(dx);
         position.setValue(dx);
       },
-      onPanResponderGrant: () => onPressIn.start(),
-      onPanResponderRelease: (_, { dx }) => {
+      onPanResponderGrant: () => onPressIn.start(), // start
+      onPanResponderRelease: (_, { dx }) => { // finish
         console.log(dx)
         if (dx < -270) {
-          Animated.spring(position, {
-            toValue: -500,
-            useNativeDriver: true,
-          }).start();
+          goLeft.start();
         } else if (dx > 270) {
-          Animated.spring(position, {
-            toValue: 500,
-            useNativeDriver: true,
-          }).start();
+          goRight.start();
         } else {
           Animated.parallel([onPressOut, goCenter]).start();
         }
       },
     })
   ).current;
+
+  const canclePress = () => { goLeft.start() }
+  const checkPress = () => { goRight.start() }
+
   return (
     <Container>
       <Card
@@ -86,6 +101,14 @@ export default function App() {
       >
         <Icon2 name={"pizza-slice"} size={98} color={"black"} />
       </Card>
+      <BtnContainer>
+        <Btn onPress={canclePress}>
+          <Icon name={"thumbs-o-down"} size={52} />
+        </Btn>
+        <Btn onPress={checkPress}>
+          <Icon name={"thumbs-o-up"} size={52} />
+        </Btn>
+      </BtnContainer>
     </Container>
   )
 }
